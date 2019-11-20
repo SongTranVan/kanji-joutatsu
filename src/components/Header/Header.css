@@ -1,0 +1,23 @@
+.bg-blue {
+    background-color: #294C7A;
+}
+
+.kosugi-maru {
+    font-family: 'Kosugi Maru', sans-serif;
+}
+
+.mg-center {
+    margin: auto;
+}
+
+.kanji-brand {
+    font-size: 3rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.romaji-brand {
+    font-size: 1.5rem;
+    text-align: center;
+    color: #ffffff;
+}

@@ -1,0 +1,40 @@
+.words-box {
+    padding: 40px;
+}
+
+.word {
+    font-weight: bold;
+    font-family: 'Kosugi Maru', sans-serif;
+    font-size: 36px;
+    border-style: dashed;
+    border-color: rgb(230, 192, 242);
+    border-radius: 5px;
+    padding: 0.25rem;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    background-color: hsl(286, 71%, 96%);
+    line-height: 1;
+}
+
+.margin-10 {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgb(204, 204, 204);
+}
+
+.mean-jap {
+    font-weight: bold;
+    font-family: 'Kosugi Maru', sans-serif;
+    font-size: 20px;
+}
+
+.mean-en {
+    font-family: 'Nutino', sans-serif;
+}
+
+.word-text {
+    font-family: 'Nutino', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+}

@@ -1,0 +1,54 @@
+#draw-table {
+    width: 404px;
+    height: 419px;
+    background-color: #fff;
+    position: relative;
+    border-radius: 3px;
+    border: 1px solid #e4e2e2;
+}
+
+#canvas {
+    border: 1px solid #b4b4b4;
+    background-color: black;
+    cursor: crosshair;
+}
+
+#kanji-result {
+    color: black;
+    width: 402px;
+    text-align: left;
+    min-height: 43px;
+    background-color: #fff;
+    margin-top: -10px;
+}
+
+#canvas-btn {
+    position: absolute;
+    z-index: 0;
+    left: 350px;
+    top: 338px;
+}
+
+.mybtn {
+    background-color: white;
+    color: rgb(56, 54, 54);
+    font-weight: bold;
+    font-family: 'Kosugi Maru', sans-serif;
+}
+
+.result-style {
+    margin: auto;
+    padding: 2.6px;
+    border: 1px solid #ccc;
+    font-size: 33px;
+    color: rgb(32, 32, 32);
+    background-color: #fff;
+    cursor: pointer;
+    font-family: 'Kosugi Maru', sans-serif;
+}
+
+.title-text {
+    color: rgb(26, 100, 228);
+    text-align: center;
+    font-family: 'Kosugi Maru', sans-serif;
+}
