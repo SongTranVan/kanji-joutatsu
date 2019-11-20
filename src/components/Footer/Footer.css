@@ -1,0 +1,26 @@
+.bg-blue {
+    background-color: #294C7A;
+}
+
+.kosugi-maru {
+    font-family: 'Kosugi Maru', sans-serif;
+}
+
+.nutino {
+    font-family: 'Nunito', sans-serif;
+}
+
+.mg-center {
+    margin: auto;
+}
+
+.author-brand {
+    font-size: 13px;
+    text-align: center;
+}
+
+.company-brand {
+    font-size: 12px;
+    text-align: center;
+    color: #ffffff;
+}
