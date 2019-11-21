@@ -35,8 +35,6 @@ class Canvas extends Component{
         model = undefined;
         //load the model
         model = await tf.loadLayersModel(path);
-        console.log("model loaded");
-        console.log(model);
         canvas = document.getElementById("canvas");
         ctx = canvas.getContext("2d");
     }
@@ -78,7 +76,7 @@ class Canvas extends Component{
     /*----- draw on canvas canvas -----*/
     draw(e) {
         if (this.state.isDrawing) {
-            ctx.strokeStyle = "white";
+            ctx.strokeStyle = "#6d6e6e";
             ctx.lineJoin = "round";
             ctx.lineCap = "round";
             ctx.lineWidth = 12;
@@ -148,20 +146,18 @@ class Canvas extends Component{
     handleKanjiClick(e) {
         var selected_kanji = document.getElementById(e.target.id).textContent;
         this.clearCanvas();
-        console.log(API_KANJI_URL + selected_kanji)
         //get kanji data
         axios.get(API_KANJI_URL + selected_kanji)
             .then(rs => {
                 const data = rs.data;
                 this.props.handleSelectedKanji(data);
-                console.log(data);
             }
         );
         //get words data
         axios.get(API_WORDS_URL + selected_kanji)
             .then(rs => {
                 const words_data = rs.data;
-                console.log(words_data);
+                this.props.handleWords(words_data);
             }
         );
     }

@@ -8,7 +8,8 @@ class Content extends Component {
     constructor(props){
         super(props);
         this.state = {
-            kanji_data: []
+            kanji_data: [],
+            words_data: []
         }
     }
 
@@ -18,19 +19,25 @@ class Content extends Component {
         });
     }
 
+    callbackHandleWords = (words_data) => {
+        this.setState({
+            words_data: words_data
+        })
+    }
+
     render(){
         return(
             <div className="container padding-by-rem">
                 <div className="row">
                     <div className="col-5">
-                        <Canvas handleSelectedKanji={this.callbackHandleSelectedKanji} width="400" height="350"/>
+                        <Canvas handleSelectedKanji={this.callbackHandleSelectedKanji} handleWords={this.callbackHandleWords} width="400" height="350"/>
                     </div>                  
                     <div className="col-7">
                         <Kanji kanji_data={this.state.kanji_data}/>
                     </div>
                 </div>
                 <div>
-                    <Word />
+                    <Word words_data={this.state.words_data}/>
                 </div>
             </div>
         );
