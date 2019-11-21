@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { API_KANJI_URL, API_WORDS_URL } from '../../constants/url';
+import { API_KANJI_URL } from '../../constants/url';
 import './Kanji.css';
 const default_kanji = "字";
 
@@ -25,7 +25,6 @@ class Kanji extends Component {
         axios.get(API_KANJI_URL + default_kanji)
             .then(rs => {
                 const data = rs.data;
-                console.log(data);
                 this.setState({
                     kanji: data.kanji,
                     grade: data.grade,
@@ -39,13 +38,6 @@ class Kanji extends Component {
                 })
             }
         );
-        //get default words data
-        axios.get(API_WORDS_URL + default_kanji)
-            .then(rs => {
-                const words_data = rs.data;
-                console.log(words_data);
-            }
-        );
     }
 
     showDefaultOnyomi(on){
@@ -53,6 +45,14 @@ class Kanji extends Component {
             <div className="onyomi" key={index}>{i}</div>
         )
         
+        return rs;
+    }
+
+    showOnyomi(on){
+        let rs = on.map((i, index) =>
+            <div className="onyomi" key={index}>{i}</div>
+        )
+
         return rs;
     }
 
@@ -64,11 +64,35 @@ class Kanji extends Component {
         return rs;
     }
 
+    showKunyomi(kun){
+        let rs = kun.map((i, index) =>
+            <div className="kunyomi" key={index}>{i}</div>
+        )
+
+        return rs;
+    }
+
     showDefaultMeanings(mean){
         let rs = mean.map((i, index) =>
             <div className="mean" key={index}>{i}</div>
         )
         
+        return rs;
+    }
+
+    showMeanings(mean){
+        let rs = mean.map((i, index) =>
+            <div className="mean" key={index}>{i}</div>
+        )
+
+        return rs;
+    }
+
+    showNameReadings(name_readings){
+        let rs = name_readings.map((i, index) =>
+            <div className="nanori" key={index}>{i}</div>
+        )
+
         return rs;
     }
 
@@ -103,11 +127,7 @@ class Kanji extends Component {
                         <div className="col-3 yomi-text">On</div>
                         <div className="col-9">
                             <div className="row float-right">
-                                {this.props.kanji_data.on_readings == null?this.showDefaultOnyomi(this.state.on_readings):
-                                    this.props.kanji_data.on_readings.map((i, index) =>
-                                        <div className="onyomi" key={index}>{i}</div>
-                                    )
-                                }
+                                {this.props.kanji_data.on_readings == null?this.showDefaultOnyomi(this.state.on_readings):this.showOnyomi(this.props.kanji_data.on_readings)}
                             </div>
                         </div>
                     </div>
@@ -115,11 +135,7 @@ class Kanji extends Component {
                         <div className="col-3 yomi-text">Kun</div>
                         <div className="col-9">
                             <div className="row float-right">
-                                {this.props.kanji_data.kun_readings == null?this.showDefaultKunyomi(this.state.kun_readings):
-                                    this.props.kanji_data.kun_readings.map((i, index) =>
-                                        <div className="kunyomi" key={index}>{i}</div>
-                                    )
-                                }
+                                {this.props.kanji_data.kun_readings == null?this.showDefaultKunyomi(this.state.kun_readings):this.showKunyomi(this.props.kanji_data.kun_readings)}
                             </div>
                         </div>
                     </div>
@@ -127,11 +143,7 @@ class Kanji extends Component {
                         <div className="col-3 yomi-text">Nanori</div>
                         <div className="col-9">
                             <div className="row float-right">
-                                {this.props.kanji_data.name_readings == null?"":
-                                    this.props.kanji_data.name_readings.map((i, index) =>
-                                        <div className="nanori" key={index}>{i}</div>
-                                    )
-                                }
+                                {this.props.kanji_data.name_readings == null?"":this.showNameReadings(this.props.kanji_data.name_readings)}
                             </div>
                         </div>
                     </div>
@@ -139,11 +151,7 @@ class Kanji extends Component {
                         <div className="col-3 yomi-text">Meanings</div>
                         <div className="col-9">
                             <div className="row float-right">
-                                {this.props.kanji_data.meanings == null?this.showDefaultMeanings(this.state.meanings):
-                                    this.props.kanji_data.meanings.map((i, index) =>
-                                        <div className="mean" key={index}>{i}</div>
-                                    )
-                                }
+                                {this.props.kanji_data.meanings == null?this.showDefaultMeanings(this.state.meanings):this.showMeanings(this.props.kanji_data.meanings)}
                             </div>
                         </div>
                     </div>

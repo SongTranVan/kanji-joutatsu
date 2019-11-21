@@ -52,6 +52,7 @@
     margin: .25rem;
     border-radius: .5rem;
     float: right;
+    font-size: 18px;
 }
 
 .kunyomi {
@@ -62,6 +63,7 @@
     padding: .25rem;
     margin: .25rem;
     border-radius: .5rem;
+    font-size: 18px;
 }
 
 .nanori {
@@ -72,12 +74,13 @@
     padding: .25rem;
     margin: .25rem;
     border-radius: .5rem;
+    font-size: 18px;
 }
 
 .mean {
     font-weight: bold;
     font-family: 'Nunito', sans-serif;
-    background: #fff8ed;
+    background: #e9cd9f;
     padding: .25rem;
     margin: .25rem;
     border-radius: 9999px;
