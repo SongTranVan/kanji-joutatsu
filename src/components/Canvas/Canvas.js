@@ -11,6 +11,7 @@ var ctx;
 var preprocess_img;
 const TOP_K = 10;
 const IMG_SIZE = 96;
+let img_data = [];
 
 class Canvas extends Component{
     constructor(props){
@@ -53,6 +54,15 @@ class Canvas extends Component{
     /*----- mouse up -----*/
     onMouseUp() {
         this.setState({ isDrawing: false });
+        preprocess_img = canvas.toDataURL("image/png");
+        // send and get multiple kanji test data
+        axios.post('http://localhost:8081/', { img : preprocess_img})
+            .then(rs => {
+                const data = JSON.parse(JSON.stringify(rs.data));
+                console.log(data);
+                img_data = data;
+            }
+        )
         //predict kanji
         this.predict_kanji();
     }
@@ -105,7 +115,6 @@ class Canvas extends Component{
     
     /*----- Predict Kanji function -----*/
     async predict_kanji(){
-        preprocess_img = canvas.toDataURL("image/png");
         // Save image into localStorage
         try {
             localStorage.setItem("preprocess_img", preprocess_img);
@@ -113,6 +122,41 @@ class Canvas extends Component{
         catch (e) {
             console.log("Storage failed: " + e);
         }
+        // for (let i = 0; i < img_data.length; i++){
+        //     let converted_img = new Image(400, 350);
+        //     converted_img.src = img_data[i];
+        //     converted_img.id = "img"+i;
+        //     converted_img.style.display = "none";
+        //     document.getElementById("img_list").appendChild(converted_img);
+        //     // let my_img = document.createElement('img');
+        //     // my_img.src = img_url;
+        //     // my_img.id = "pre_img";
+        //     // console.log(my_img);
+        //     // document.getElementById("img-canvas").innerHTML = my_img;
+        //     // let predict_img = document.getElementById("pre_img");
+        //     // console.log(predict_img)
+        //     // let tensor = this.preprocessCanvas(predict_img);
+        //     // console.log(canvas);
+        //     // let im = document.createElement('img');
+        //     // im.src = img_data[i];
+        //     // im.id = i;
+        //     // document.getElementById("my_img").appendChild(im);
+        // }
+        // var pre_img = document.getElementById("img1");
+        // console.log(pre_img);
+        // var pr_canvas = document.getElementById("pr_canvas");
+        // var pr_ctx = pr_canvas.getContext("2d");
+        // console.log(cl_img)
+        // let predict_img = document.getElementById("cl_img");
+        // let cl_img = document.getElementById("cl_img");
+        // pr_ctx.drawImage(cl_img, 50, 1);
+        // console.log(cl_img);
+        // let tensor = this.preprocessCanvas(cl_img);
+        // var my_canvas = document.getElementById("pr_canvas");
+        let converted_img = new Image(400, 350);
+        converted_img.src = img_data[0];
+        console.log(converted_img)
+        // let tensor = this.preprocessCanvas(pre_img);
         let tensor = this.preprocessCanvas(canvas);
         // make predictions on the preprocessed image tensor
         let predictions = await model.predict(tensor).dataSync();
@@ -172,12 +216,6 @@ class Canvas extends Component{
                 this.props.handleWords(words_data);
             }
         );
-        //get multiple kanji test data
-        axios.post('http://localhost:8000/')
-            .then(rs => {
-                const data = rs.data;
-                console.log('hihi');
-            })
     }
 
     render(){
