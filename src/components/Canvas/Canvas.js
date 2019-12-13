@@ -8,6 +8,7 @@ var path = '../model/model.json';
 var model;
 var canvas;
 var ctx;
+var preprocess_img;
 const TOP_K = 10;
 const IMG_SIZE = 96;
 
@@ -20,21 +21,22 @@ class Canvas extends Component{
             lastY: 0,
             top_k: [],
         };
-        this.draw = this.draw.bind(this);
+        this.drawOnCanvas = this.drawOnCanvas.bind(this);
         this.onMouseDown = this.onMouseDown.bind(this);
         this.onMouseUp = this.onMouseUp.bind(this);
         this.onMouseOut = this.onMouseOut.bind(this);
         this.clearCanvas = this.clearCanvas.bind(this);
         this.handleKanjiClick = this.handleKanjiClick.bind(this);
-        this.handleOnChangeSearchText = this.handleOnChangeSearchText.bind(this);
     }
 
     /*----- load model and init canvas -----*/
     async componentDidMount(){
+        console.log("loading model to browser...")
         //clear the model variable
         model = undefined;
         //load the model
         model = await tf.loadLayersModel(path);
+        console.log("model loaded")
         canvas = document.getElementById("canvas");
         ctx = canvas.getContext("2d");
     }
@@ -52,7 +54,7 @@ class Canvas extends Component{
     onMouseUp() {
         this.setState({ isDrawing: false });
         //predict kanji
-        this.predict();
+        this.predict_kanji();
     }
 
     /*----- mouse out -----*/
@@ -73,8 +75,8 @@ class Canvas extends Component{
         })
     }
 
-    /*----- draw on canvas canvas -----*/
-    draw(e) {
+    /*----- draw on Canvas -----*/
+    drawOnCanvas(e) {
         if (this.state.isDrawing) {
             ctx.strokeStyle = "#6d6e6e";
             ctx.lineJoin = "round";
@@ -102,7 +104,15 @@ class Canvas extends Component{
     }
     
     /*----- Predict Kanji function -----*/
-    async predict(){
+    async predict_kanji(){
+        preprocess_img = canvas.toDataURL("image/png");
+        // Save image into localStorage
+        try {
+            localStorage.setItem("preprocess_img", preprocess_img);
+        }
+        catch (e) {
+            console.log("Storage failed: " + e);
+        }
         let tensor = this.preprocessCanvas(canvas);
         // make predictions on the preprocessed image tensor
         let predictions = await model.predict(tensor).dataSync();
@@ -112,14 +122,16 @@ class Canvas extends Component{
         this.handleTopResult(top_k);
     }
     
+    /*----- Save top_k to state -----*/
     handleTopResult(top_k) {
         this.setState({
             top_k: top_k
         })
     }
+
     /*----- Get TOP_K -----*/
     getTopK(predictions){
-        // Input: predictions is the output dataSync of model.predict() function
+        // Input: predictions is the output dataSync of model.predict_kanji() function
         let top_k = Array.from(predictions)
             .map(function(p, i){
                 return {
@@ -133,7 +145,7 @@ class Canvas extends Component{
     }
     
     /*----- Draw TOP_K results -----*/
-    drawTopResult(top_k){
+    returnResult(top_k){
         var results = top_k.map((i,index) => 
             <span id={index} onClick={this.handleKanjiClick} className="result-style" key={index}>
                 {i['className']}
@@ -160,12 +172,12 @@ class Canvas extends Component{
                 this.props.handleWords(words_data);
             }
         );
-    }
-
-    handleOnChangeSearchText(e){
-        this.setState({
-            search_text: e.target.value
-        })
+        //get multiple kanji test data
+        axios.post('http://localhost:8000/')
+            .then(rs => {
+                const data = rs.data;
+                console.log('hihi');
+            })
     }
 
     render(){
@@ -177,12 +189,12 @@ class Canvas extends Component{
                         <canvas 
                             id="canvas" 
                             width={this.props.width} height={this.props.height} 
-                            onMouseMove={this.draw}
+                            onMouseMove={this.drawOnCanvas}
                             onMouseDown={this.onMouseDown}
                             onMouseUp={this.onMouseUp} 
                             onMouseOut={this.onMouseOut}
                         />
-                        <div id="kanji-result">{this.drawTopResult(this.state.top_k)}</div>
+                        <div id="kanji-result">{this.returnResult(this.state.top_k)}</div>
                         <div id="canvas-btn">
                             <button className="btn btn-light btn-sm mybtn" onClick={this.clearCanvas}>削除</button>
                         </div>
